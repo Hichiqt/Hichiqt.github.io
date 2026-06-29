@@ -26,8 +26,6 @@ const I18N = {
 
     "about.title": "Обо мне",
     "about.text": "Делаю лендинги, портфолио и сайты-визитки под ключ — от структуры и текстов до вёрстки и анимаций. Фокус на конверсии: сайт должен не просто выглядеть, а приносить заявки.",
-    "about.locKey": "локация",
-    "about.locVal": "удалённо · по всему миру",
     "about.statusKey": "статус",
     "about.statusVal": "беру заказы",
     "about.stackKey": "стек",
@@ -44,7 +42,7 @@ const I18N = {
 
     "footer.note": "сделано на чистом HTML · CSS · JS",
 
-    "modal.more": "подробнее",
+    "modal.more": "Подробнее",
     "modal.openSite": "Открыть сайт",
     "case.soon": "Вы можете стать моим первым клиентом",
     "copy.done": "скопировано ✓",
@@ -68,8 +66,6 @@ const I18N = {
 
     "about.title": "About",
     "about.text": "I build landing pages, portfolios and business-card sites end-to-end — from structure and copy to markup and animation. Conversion-focused: a site should not just look good, it should bring leads.",
-    "about.locKey": "location",
-    "about.locVal": "remote · worldwide",
     "about.statusKey": "status",
     "about.statusVal": "available for work",
     "about.stackKey": "stack",
@@ -86,7 +82,7 @@ const I18N = {
 
     "footer.note": "built with plain HTML · CSS · JS",
 
-    "modal.more": "details",
+    "modal.more": "Details",
     "modal.openSite": "Open site",
     "case.soon": "You could become my first client",
     "copy.done": "copied ✓",
