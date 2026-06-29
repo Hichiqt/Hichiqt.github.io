@@ -76,6 +76,32 @@ img, video { max-width: 100%; display: block; }
   opacity: 0.9;
 }
 
+/* Заблюренный кружок, следующий за курсором */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 60;           /* мягкий спотлайт поверх контента */
+  opacity: 0;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 65%);
+  filter: blur(60px);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.4s var(--ease), width 0.35s var(--ease), height 0.35s var(--ease);
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+.cursor-glow.on { opacity: 0.32; }
+/* крупнее и ярче над кликабельным */
+.cursor-glow.hot {
+  width: 270px;
+  height: 270px;
+  opacity: 0.5;
+}
+
 /* ============================ HEADER ============================ */
 .site-header {
   position: sticky;

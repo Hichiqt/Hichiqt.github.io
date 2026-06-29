@@ -9,7 +9,7 @@
    --------------------------------------------------------- */
 const I18N = {
   ru: {
-    "logo": "ЛАЗИМ",
+    "logo": "Lurium",
     "nav.about": "обо мне",
     "nav.services": "услуги",
     "nav.process": "как работаю",
@@ -17,7 +17,7 @@ const I18N = {
     "nav.contact": "контакт",
 
     "hero.status": "беру заказы",
-    "hero.name": "ЛАЗИМ",
+    "hero.name": "Lurium",
     "hero.lead": "Лендинги, портфолио и визитки под ключ. Быстро, адаптивно, с анимациями, которые продают.",
     "hero.seeCases": "Смотреть кейсы",
     "hero.scroll": "scroll",
@@ -46,12 +46,12 @@ const I18N = {
 
     "modal.more": "подробнее",
     "modal.openSite": "Открыть сайт",
-    "case.soon": "слот свободен · скоро",
+    "case.soon": "Вы можете стать моим первым клиентом",
     "copy.done": "скопировано ✓",
   },
 
   en: {
-    "logo": "LAZIM",
+    "logo": "Lurium",
     "nav.about": "about",
     "nav.services": "services",
     "nav.process": "process",
@@ -59,7 +59,7 @@ const I18N = {
     "nav.contact": "contact",
 
     "hero.status": "available for work",
-    "hero.name": "LAZIM",
+    "hero.name": "Lurium",
     "hero.lead": "Landing pages, portfolios and business-card sites, done end-to-end. Fast, responsive, with animations that sell.",
     "hero.seeCases": "See work",
     "hero.scroll": "scroll",
@@ -88,7 +88,7 @@ const I18N = {
 
     "modal.more": "details",
     "modal.openSite": "Open site",
-    "case.soon": "slot open · soon",
+    "case.soon": "You could become my first client",
     "copy.done": "copied ✓",
   },
 };
@@ -201,29 +201,10 @@ const STEPS = [
    poster — путь к превью (1280x800 ~). Пока пусто → рисуется сетка-плейсхолдер.
    --------------------------------------------------------- */
 const CASES = [
-  {
-    filled: true,
-    name: "Aurora — лендинг продукта",          // TODO: название кейса
-    tag: "landing",
-    url: "https://example.com",                  // TODO: ссылка на сайт
-    poster: "",                                  // TODO: assets/cases/aurora.jpg
-  },
-  {
-    filled: true,
-    name: "Nomad — портфолио",                   // TODO
-    tag: "portfolio",
-    url: "https://example.com",                  // TODO
-    poster: "",                                  // TODO
-  },
-  {
-    filled: true,
-    name: "Studio K — визитка",                  // TODO
-    tag: "business card",
-    url: "https://example.com",                  // TODO
-    poster: "",                                  // TODO
-  },
-  { filled: false },                             // пустой слот «скоро»
-  { filled: false },                             // пустой слот «скоро»
+  // Пока кейсов нет — показываем приглашение. Когда появится работа, добавь сюда:
+  // { filled: true, name: "Название", tag: "landing", url: "https://...", poster: "assets/cases/xxx.jpg" }
+  { filled: false },                             // приглашение «стать первым клиентом»
+  { filled: false },                             // приглашение «стать первым клиентом»
 ];
 
 /* =========================================================
@@ -328,8 +309,7 @@ function renderCases() {
           </div>
           <div class="case-body">
             <div class="case-info">
-              <div class="case-name">—</div>
-              <div class="case-tag">vacant</div>
+              <div class="case-tag">free slot</div>
             </div>
             <span class="case-link">${t("cta.write")} <span aria-hidden="true">↗</span></span>
           </div>
@@ -448,6 +428,41 @@ function initParallax() {
   }, { passive: true });
 }
 
+/* ---------- заблюренный кружок за курсором ---------- */
+function initCursor() {
+  const dot = $(".cursor-glow");
+  if (!dot) return;
+  // не показываем на тач-устройствах и при reduce-motion
+  if (reduceMotion || window.matchMedia("(hover: none)").matches) {
+    dot.remove();
+    return;
+  }
+
+  let tx = 0, ty = 0, x = 0, y = 0, started = false;
+
+  window.addEventListener("mousemove", (e) => {
+    tx = e.clientX; ty = e.clientY;
+    if (!started) { started = true; x = tx; y = ty; dot.classList.add("on"); }
+  }, { passive: true });
+
+  // прячем, когда курсор уходит за пределы окна
+  document.addEventListener("mouseleave", () => dot.classList.remove("on"));
+  document.addEventListener("mouseenter", () => { if (started) dot.classList.add("on"); });
+
+  // подсветка крупнее над кликабельными элементами
+  document.addEventListener("mouseover", (e) => {
+    dot.classList.toggle("hot", !!e.target.closest("a, button, .card, .case"));
+  }, { passive: true });
+
+  (function loop() {
+    // плавное «догоняние» курсора (lerp) — мягкий шлейф
+    x += (tx - x) * 0.16;
+    y += (ty - y) * 0.16;
+    dot.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+    requestAnimationFrame(loop);
+  })();
+}
+
 /* ---------- копирование ника ---------- */
 function initCopy() {
   $$(".copy-btn").forEach((btn) => {
@@ -516,6 +531,7 @@ function init() {
   startTyping();
   initReveal();
   initParallax();
+  initCursor();
   initCopy();
   initLottie();
 }
